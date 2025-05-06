@@ -1,0 +1,32 @@
+# Node modules
+node_modules/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Coverage reports
+coverage/
+
+# Compiled output
+dist/
+build/
+
+# IDEs and editors
+.vscode/
+.idea/
+
+# MongoDB dump/output
+dump/

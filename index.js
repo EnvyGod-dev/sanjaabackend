@@ -2,6 +2,9 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const userRoutes = require('./routes/user.routes');
+const userInfoRoutes = require('./routes/userinfo.routes');
+const noteRoutes = require('./routes/note.routes');
+
 require('dotenv').config();
 
 const app = express();
@@ -18,6 +21,9 @@ const startServer = async () => {
         console.log('✅ MongoDB connection established to:', MONGO_URI);
 
         app.use('/api/users', userRoutes);
+        app.use('/api/userinfo', userInfoRoutes);
+        app.use('/uploads', express.static('uploads'));
+        app.use('/api/notes', noteRoutes);
 
         app.listen(PORT, () => {
             console.log(`🚀 Server running at http://localhost:${PORT}`);

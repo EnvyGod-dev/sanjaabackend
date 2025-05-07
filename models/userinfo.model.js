@@ -1,35 +1,41 @@
 const mongoose = require('mongoose');
 
 const UserInfoSchema = new mongoose.Schema({
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
+        unique: true,
+    },
     nickname: {
         type: String,
         required: true,
         unique: true,
         minlength: 3,
         maxlength: 20,
-        match: /^[a-zA-Z0-9_]+$/
+        match: /^[a-zA-Z0-9_]+$/,
     },
     email: {
         type: String,
         required: true,
         unique: true,
-        match: /.+\@.+\..+/
+        match: /.+\@.+\..+/,
     },
     avatar: {
         type: String,
-        default: 'default.png'
+        default: 'default.png',
     },
     favoriteAnimal: {
         type: String,
         enum: ['dog', 'cat', 'panda', 'bear', 'lion', 'rabbit'],
-        required: true
+        required: true,
     },
     bio: {
         type: String,
-        maxlength: 300
-    }
+        maxlength: 300,
+    },
 }, {
-    timestamps: true
+    timestamps: true,
 });
 
 UserInfoSchema.methods.toJSON = function () {

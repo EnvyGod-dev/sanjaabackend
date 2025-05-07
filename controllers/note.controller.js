@@ -23,6 +23,16 @@ exports.getNotesByRef = async (req, res) => {
     }
 };
 
+// GET /api/notes?refDate=2025-05-07
+exports.getAllDailyNotes = async (req, res) => {
+    try {
+        const notes = await Note.find({ type: 'daily' }).sort({ createdAt: -1 });
+        res.status(200).json(notes);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
 // UPDATE
 exports.updateNote = async (req, res) => {
     try {
@@ -44,6 +54,38 @@ exports.deleteNote = async (req, res) => {
         const deleted = await Note.findByIdAndDelete(req.params.id);
         if (!deleted) return res.status(404).json({ error: 'Note not found' });
         res.json({ message: 'Note deleted' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
+exports.getCalendarNotes = async (req, res) => {
+    try {
+        const { refDate } = req.query;
+
+        const query = { type: 'calendar' };
+        if (refDate) {
+            query.refDate = refDate;
+        }
+
+        const notes = await Note.find(query).sort({ refDate: 1 });
+        res.json(notes);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
+exports.getWeeklyNotes = async (req, res) => {
+    try {
+        const { refDate } = req.query;
+
+        const query = { type: 'weekly' };
+        if (refDate) {
+            query.refDate = refDate;
+        }
+
+        const notes = await Note.find(query).sort({ refDate: -1 });
+        res.json(notes);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
 const UserSchema = new mongoose.Schema({
     name: {
@@ -16,6 +17,23 @@ const UserSchema = new mongoose.Schema({
     }
 });
 
+// 🔐 Hash the password before saving
+UserSchema.pre('save', async function (next) {
+    if (!this.isModified('password')) return next();
+    try {
+        this.password = await bcrypt.hash(this.password, 10);
+        next();
+    } catch (err) {
+        next(err);
+    }
+});
+
+// ✅ Add comparePassword method
+UserSchema.methods.comparePassword = async function (candidatePassword) {
+    return await bcrypt.compare(candidatePassword, this.password);
+};
+
+// Optional: Remove password from response
 UserSchema.methods.toJSON = function () {
     const obj = this.toObject();
     delete obj.password;

@@ -4,7 +4,8 @@ const upload = require('../middlewares/upload');
 const controller = require('../controllers/userinfo.controller');
 
 router.post('/', upload.single('avatar'), controller.createUserInfo);
-router.get('/', controller.getAllUsers);
-router.get('/:nickname', controller.getUserByNickname);
+router.get('/by-user/:userId', controller.getUserInfoByUserId);
+
+router.put('/by-user/:userId', controller.updateUserInfoByUserId);
 
 module.exports = router;
